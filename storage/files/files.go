@@ -51,7 +51,7 @@ func (s Storage) Save(page *storage.Page) error {
 	return nil
 }
 
-func (s Storage) PickRandom(userName string) (page *storage.Page, error) {
+func (s Storage) PickRandom(userName string) (page *storage.Page, err error) {
 	filePath := filepath.Join(s.basePath, userName)
 
 	files, err := os.ReadDir(filePath)
