@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"log"
-	event_consumer "telegram-bot/consumer/event-consumer"
+	"telegram-bot/consumer/event-consumer"
 	"telegram-bot/events/tg"
 	"telegram-bot/storage/files"
 
@@ -12,7 +12,7 @@ import (
 
 const (
 	botHost     = "api.telegram.org"
-	pathStorage = "storage"
+	pathStorage = "linked-storage"
 	batchSize   = 100
 )
 
