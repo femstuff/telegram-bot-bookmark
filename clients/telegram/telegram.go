@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"path"
 	"strconv"
+
 	"telegram-bot/lib/e"
 )
 
@@ -71,7 +72,7 @@ func (c *Client) doRequest(method string, query url.Values) ([]byte, error) {
 	if err != nil {
 		return nil, e.Wrap(errMsg, err)
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer func() { resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 
@@ -82,9 +83,9 @@ func (c *Client) doRequest(method string, query url.Values) ([]byte, error) {
 	return body, nil
 }
 
-func (c *Client) SendMessage(chatId int, text string) error {
+func (c *Client) SendMessage(chatID int, text string) error {
 	q := url.Values{}
-	q.Add("chatID", strconv.Itoa(chatId))
+	q.Add("chat_id", strconv.Itoa(chatID))
 	q.Add("text", text)
 
 	_, err := c.doRequest(methodSend, q)
