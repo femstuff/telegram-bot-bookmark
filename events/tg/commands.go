@@ -14,6 +14,7 @@ const (
 	CmdHelp   = "/help"
 	CmdRandom = "/random"
 	CmdStart  = "/start"
+	CmdShow   = "/show"
 )
 
 func (p *Processor) doCmd(text string, chatID int, username string) error {
@@ -32,6 +33,8 @@ func (p *Processor) doCmd(text string, chatID int, username string) error {
 		return p.sendRandom(chatID, username)
 	case CmdHelp:
 		return p.sendHelp(chatID)
+	case CmdShow:
+		return p.sendList(chatID, username)
 	default:
 		return p.tg.SendMessage(chatID, unknownMsg)
 	}
@@ -77,6 +80,23 @@ func (p *Processor) sendRandom(chatID int, username string) error {
 	}
 
 	return p.storage.Remove(page)
+}
+
+func (p *Processor) sendList(chatID int, username string) error {
+	pages, err := p.storage.ShowAll(username)
+	if err != nil && !errors.Is(err, errors.New("no saved page")) {
+		return e.Wrap("cant show all list pages", err)
+	}
+
+	if errors.Is(err, errors.New("no saved pages")) {
+		return p.tg.SendMessage(chatID, enoughPagesMsg)
+	}
+
+	if err := p.tg.SendMessage(chatID, pages.URL); err != nil {
+		return e.Wrap("cant send link pages", err)
+	}
+
+	return nil
 }
 
 func (p *Processor) sendHelp(chatID int) error {

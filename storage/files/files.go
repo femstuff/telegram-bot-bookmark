@@ -74,6 +74,29 @@ func (s Storage) PickRandom(userName string) (page *storage.Page, err error) {
 	return s.decodePage(filepath.Join(path, file.Name()))
 }
 
+func (s Storage) ShowAll(userName string) ([]*storage.Page, error) {
+	path := filepath.Join(s.basePath, userName)
+
+	files, err := os.ReadDir(path)
+	if err != nil {
+		return nil, e.Wrap("cant show all list pages", err)
+	}
+
+	if len(files) == 0 {
+		return nil, storage.ErrNoSavedPages
+	}
+
+	pages := make([]*storage.Page, len(files))
+	for i, file := range files {
+		pages[i], err = s.decodePage(filepath.Join(path, file.Name()))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return pages, nil
+}
+
 func (s Storage) Remove(p *storage.Page) error {
 	fileName, err := fileName(p)
 	if err != nil {

@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"log"
+
+	"telegram-bot/clients/telegram"
 	"telegram-bot/consumer/event-consumer"
 	"telegram-bot/events/tg"
 	"telegram-bot/storage/files"
-
-	"telegram-bot/clients/telegram"
 )
 
 const (

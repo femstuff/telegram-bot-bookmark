@@ -13,6 +13,7 @@ var ErrNoSavedPages = errors.New("no saved pages")
 
 type Storage interface {
 	Save(p *Page) error
+	ShowAll(userName string) (*Page, error)
 	PickRandom(userName string) (*Page, error)
 	Remove(p *Page) error
 	IsExists(p *Page) (bool, error)
